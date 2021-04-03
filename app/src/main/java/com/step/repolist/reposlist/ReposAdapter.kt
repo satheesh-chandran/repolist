@@ -17,29 +17,22 @@ class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 }
 
-val diffCallBack = object : DiffUtil.ItemCallback<Repo>() {
-    override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-        return oldItem == newItem
-    }
-
-    override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-        return oldItem == newItem
-    }
-
+class RepoItemCallback : DiffUtil.ItemCallback<Repo>() {
+    override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean = oldItem == newItem
+    override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean = oldItem == newItem
 }
 
 class ReposAdapter(private val repoClickHandler: (Repo) -> Unit) :
-    ListAdapter<Repo, RepoViewHolder>(diffCallBack) {
+    ListAdapter<Repo, RepoViewHolder>(RepoItemCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false)
         return RepoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(getItem(position))
-        holder.itemView.setOnClickListener{
-            repoClickHandler(getItem(position))
-        }
+        val repo: Repo = getItem(position)
+        holder.bind(repo)
+        holder.itemView.setOnClickListener { repoClickHandler(repo) }
     }
-
 }

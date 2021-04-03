@@ -6,11 +6,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-fun createGithubApiService(): GithubAPIService {
-    val retrofit = Retrofit.Builder().baseUrl("https://api.github.com")
-        .addConverterFactory(MoshiConverterFactory.create()).build()
-    return retrofit.create(GithubAPIService::class.java)
-}
+fun createGithubApiService(): GithubAPIService = Retrofit
+    .Builder()
+    .baseUrl("https://api.github.com")
+    .addConverterFactory(MoshiConverterFactory.create())
+    .build()
+    .create(GithubAPIService::class.java)
 
 interface GithubAPIService {
     @GET("/search/repositories")

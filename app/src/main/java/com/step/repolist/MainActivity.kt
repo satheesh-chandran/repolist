@@ -2,13 +2,14 @@ package com.step.repolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.Json
 import com.step.repolist.api.SearchResult
 import com.step.repolist.api.createGithubApiService
 import com.step.repolist.repodetails.RepoDetailsActivity
 import com.step.repolist.reposlist.ReposAdapter
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,12 +21,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        adapter = ReposAdapter {
-            RepoDetailsActivity.startActivity(this, it)
-        }
+
+        adapter = ReposAdapter { RepoDetailsActivity.startActivity(this, it) }
+
         val list: RecyclerView = this.findViewById(R.id.list)
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
+
         val service = createGithubApiService()
         service.searchRepositories("android").enqueue(object : Callback<SearchResult> {
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
